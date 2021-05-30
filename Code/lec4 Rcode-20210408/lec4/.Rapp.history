@@ -1,0 +1,38 @@
+2.3+2+2.3+2.3+3+3.7+4+3.7
+23.3/8
+24.3/8
+############## lec 5 Credit data #############
+######## Linglong Kong @ Edmonton Jan 17, 2016 #########
+#
+creditData = read.csv("/Volumes/MHD2/Study/2016/teach/stat441/dataset/lec5/Credit.csv.csv")  # read csv file
+############## lec 5 Credit data #############
+######## Linglong Kong @ Edmonton Jan 17, 2016 #########
+#
+creditData = read.csv("/Volumes/MHD2/Study/2016/teach/stat441/dataset/lec5/Credit.csv")  # read csv file
+names(creditData)
+creditData(1:10,)
+creditData[1:10,]
+library(ISLR)
+data(default)
+data(Default)
+default
+Default[1:10,]
+write.table( Default, '/Volumes/MHD2/Study/2016/teach/stat441/dataset/lec5/Credit.txt', row.names=F, col.names=Y)
+write.table( Default, '/Volumes/MHD2/Study/2016/teach/stat441/dataset/lec5/Credit.txt', row.names=F, col.names=T)
+############## lec 5 Credit data #############
+######## Linglong Kong @ Edmonton Jan 17, 2016 #########
+#
+creditData = read.csv("/Volumes/MHD2/Study/2016/teach/stat441/dataset/lec5/Credit.csv")  # read csv file#
+#
+attach(creditData)
+# Lab3: Subset Selection Methods#
+# Best Subset Selection#
+library(ISLR)#
+fix(Hitters)#
+names(Hitters)#
+dim(Hitters)#
+sum(is.na(Hitters$Salary))
+# Lab3: Subset Selection Methods#
+# Best Subset Selection#
+library(ISLR)
+fix(Hitters)

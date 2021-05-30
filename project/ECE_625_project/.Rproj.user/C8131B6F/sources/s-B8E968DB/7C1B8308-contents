@@ -1,0 +1,20 @@
+############## lec 3 TV advertising data ############
+
+TVadData聽=聽read.csv("~/courses/ECE\ 625\ Fall\ 2016/dataset/lec3/Advertising.csv")聽聽#聽read聽csv聽file
+
+attach(TVadData)
+TVadlm = lm(Sales~TV)
+summary(TVadlm)
+
+# pdf("~/courses/ECE\ 625\ Fall\ 2016/lec/lec3/lec3_2.pdf")
+
+plot(TV,Sales, col='red',pch =16)
+abline(TVadlm,lwd=2,col='blue')
+fits = predict(TVadlm)
+for (i in 1:length(fits)){
+	lines(c(TV[i], TV[i]),c(Sales[i], fits[i]),col='grey')
+}
+
+# dev.off()
+
+####################### end of code ##########################

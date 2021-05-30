@@ -1,0 +1,51 @@
+install.packages(c("VIM","mice"))
+install.packages("raster")
+library(mice)
+library(raster)
+library(leaps)
+
+# data preprocess
+HouseData=read.csv("EdmontonRealEstateData.csv")
+HouseData = trim(HouseData)
+dim(HouseData)
+
+HouseData = subset(HouseData, HouseData$net_area != 0 & HouseData$effective_build_year != '' & HouseData$assessed_value != 0 )
+dim(HouseData)
+
+HouseData = subset(HouseData, HouseData$assessed_value != 500 )
+dim(HouseData)
+
+
+HouseData = HouseData[,-c(12,14)]
+dim(HouseData)
+
+HouseData = na.omit(HouseData)
+dim(HouseData)
+
+head(HouseData)
+typeof(HouseData$property_type)
+
+table(HouseData$property_type)
+
+typeof(HouseData)
+
+HouseData[[1]][1]
+
+
+regfit.full=regsubsets(assessed_value~.,data=HouseData)
+summary(regfit.full)
+
+
+
+
+
+regfit.full=regsubsets(Salary~.,data=Hitters,nvmax=19)
+reg.summary=summary(regfit.full)
+names(reg.summary)
+reg.summary$rsq
+par(mfrow=c(2,2))
+
+
+attach(HouseData)
+
+

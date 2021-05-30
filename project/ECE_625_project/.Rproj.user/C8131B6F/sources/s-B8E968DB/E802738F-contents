@@ -1,0 +1,62 @@
+############## lec 12 Heart data ############
+
+rm(list=ls())
+
+heartData聽=聽read.csv("Heart.csv",header=TRUE,row.names=1)聽聽
+heartData = na.omit(heartData)
+dim(heartData)
+
+## LDA 
+library(MASS)
+heart.lda = lda(AHD ~., data = heartData)
+lda.pred = predict(heart.lda, data= heartData)$posterior[,2]
+
+table(lda.pred>0.5, heartData[,'AHD'])
+
+## SVM - linear
+svmfit=svm(AHD ~., data = heartData, kernel="linear", cost=1,scale=FALSE)
+svm.pred=-attr(predict(svmfit,heartData,decision.values=TRUE),'decision.values')
+table(svm.pred>0, heartData[,'AHD'])
+
+svmfit=svm(AHD ~., data = heartData, kernel="linear", cost=1,scale=FALSE,probability=TRUE)
+svm.pred1=attr(predict(svmfit,heartData,probability=TRUE),'probabilities')[,2]
+table(svm.pred1>0.5, heartData[,'AHD'])
+
+## SVM - radial
+set.seed(1)
+train = sample(1:length(heartData[,'AHD']),(length(heartData[,'AHD'])-1)/2)
+
+svmfit=svm(AHD ~., data = heartData, kernel="radial", cost=1,gamma = .01,scale=FALSE,probability=TRUE)
+svm.pred2=attr(predict(svmfit,heartData,probability=TRUE),'probabilities')[,2]
+table(svm.pred2>0.5, heartData[,'AHD'])
+
+svmfit=svm(AHD ~., data = heartData[train,], kernel="linear", cost=1,scale=FALSE,probability=TRUE)
+svm.pred3=attr(predict(svmfit,heartData[-train,],probability=TRUE),'probabilities')[,2]
+table(svm.pred3>0.5, heartData[-train,'AHD'])
+
+svmfit=svm(AHD ~., data = heartData[train,], kernel="radial", cost=1,gamma = .01,scale=FALSE,probability=TRUE)
+svm.pred4=attr(predict(svmfit,heartData[-train,],probability=TRUE),'probabilities')[,2]
+table(svm.pred4>0.5, heartData[-train,'AHD'])
+
+svmfit=svm(AHD ~., data = heartData[train,], kernel="radial", cost=1,gamma = .001,scale=FALSE,probability=TRUE)
+svm.pred5=attr(predict(svmfit,heartData[-train,],probability=TRUE),'probabilities')[,2]
+table(svm.pred5>0.5, heartData[-train,'AHD'])
+
+
+# ROC Curves
+# install.packages('ROCR')
+library(ROCR)
+rocplot=function(pred, truth, ...){
+   predob = prediction(pred, truth)
+   perf = performance(predob, "tpr", "fpr")
+   plot(perf,...)}   
+   
+rocplot(lda.pred,heartData[,'AHD'])
+rocplot(svm.pred,heartData[,'AHD'],add=T,col="red")
+rocplot(svm.pred1,heartData[,'AHD'],add=T,col="blue")
+rocplot(svm.pred2,heartData[,'AHD'],add=T,col="green")
+
+rocplot(svm.pred3,heartData[-train,'AHD'])
+rocplot(svm.pred4,heartData[-train,'AHD'],add=T,col="red")
+rocplot(svm.pred5,heartData[-train,'AHD'],add=T,col="blue")
+
